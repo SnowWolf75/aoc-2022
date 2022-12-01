@@ -36,3 +36,9 @@ repos:
     rev: v0.991
     hooks:
     -   id: mypy
+-   repo: local
+    hooks:
+    -   id: create-day-tiles
+        name: create-day-tiles
+        entry: python3 AoCTiles/create_aoc_tiles.py
+        language: system
