@@ -35,11 +35,13 @@ def timing(name: str = '') -> Generator[None, None, None]:
 def _get_cookie_headers() -> dict[str, str]:
     with open(os.path.join(HERE, '../.env')) as f:
         contents = f.read().strip()
+    print(f'Cooooookie: {contents}')
     return {'Cookie': contents}
 
 
 def get_input(year: int, day: int) -> str:
     url = f'https://adventofcode.com/{year}/day/{day}/input'
+    print(f'URL: {url}')
     req = urllib.request.Request(url, headers=_get_cookie_headers())
     return urllib.request.urlopen(req).read().decode()
 
@@ -60,6 +62,7 @@ def download_input() -> int:
     parser.parse_args()
 
     year, day = get_year_day()
+    print(f'Y: {year}  D: {day}')
 
     for i in range(5):
         try:

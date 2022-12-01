@@ -6,28 +6,54 @@ import os.path
 import pytest
 
 import support
+# import numpy as np
 
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
 def compute(s: str) -> int:
-    n = 0
-    for i, c in enumerate(s.strip(), start=1):
-        if c == '(':
-            n += 1
-        elif c == ')':
-            n -= 1
-            if n == -1:
-                return i
+    elves = []
+    c = 0
+    elves.append(0)
+
+    for i in s.splitlines():
+        if i == '':
+            c += 1
+            elves.append(0)
+            print('')
         else:
-            raise AssertionError(f'unexpected: {c!r}')
-    raise AssertionError('unreachable')
+            cal_val = int(i)
+            elves[c] += cal_val
+            print(f'C: {c}  EV: {elves[c]}')
+
+    max_cal = 0
+
+    hungry = sorted(elves, reverse=True)
+    three = hungry[0:3]
+    print(three)
+
+    max_cal = three[0] + three[1] + three[2]
+
+    return max_cal
 
 
 INPUT_S = '''\
-()())
+1000
+2000
+3000
+
+4000
+
+5000
+6000
+
+7000
+8000
+9000
+
+10000
 '''
-EXPECTED = 5
+EXPECTED = 45000
 
 
 @pytest.mark.parametrize(
