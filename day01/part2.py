@@ -20,17 +20,17 @@ def compute(s: str) -> int:
         if i == '':
             c += 1
             elves.append(0)
-            print('')
+            #print('')
         else:
             cal_val = int(i)
             elves[c] += cal_val
-            print(f'C: {c}  EV: {elves[c]}')
+            #print(f'C: {c}  EV: {elves[c]}')
 
     max_cal = 0
 
     hungry = sorted(elves, reverse=True)
     three = hungry[0:3]
-    print(three)
+    #print(three)
 
     max_cal = three[0] + three[1] + three[2]
 
