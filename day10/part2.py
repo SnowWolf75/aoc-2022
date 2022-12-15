@@ -10,15 +10,86 @@ import support
 INPUT_TXT = os.path.join(os.path.dirname(__file__), 'input.txt')
 
 
-def computeP1(s: str) -> str:
+def in_sprite(s: int, p: int) -> bool:
+    return (s >= p - 1) & (s <= p + 1)
+
+
+def computeP1(s: str) -> int:
+    commands = s.splitlines()
+
+    cycle = 1
+    strength = 1
+    graph = [0]
+
+    for c in commands:
+        if c.startswith('noop'):
+            graph.append(strength)
+            cycle += 1
+        if c.startswith('addx'):
+            _, value = c.split(" ")
+            value = int(value)
+
+            graph.append(strength)
+            cycle += 1
+            graph.append(strength)
+            cycle += 1
+            strength += value
+
+    final = 0
+    for r in range(20, cycle, 40):
+        peak = r * graph[r]
+        # print(f"C:{r}\tS:{graph[r]}\tPeak:{peak}")
+        final += peak
+
+    return final
+
+
+def check_pixel(s: int, c: int) -> str:
+    if in_sprite(s, c):
+        return "#"
+    else:
+        return "."
 
 
 def compute(s: str) -> str:
     commands = s.splitlines()
 
+    cycle = 1
+    strength = 1
+    graph = [0]
+    screen = ""
+    pixel = cycle % 40
 
-    # TODO: implement solution here!
-    return "0"
+    for c in commands:
+        if c.startswith('noop'):
+            graph.append(strength)
+            screen += check_pixel(strength, pixel)
+            cycle += 1
+        elif c.startswith('addx'):
+            _, value = c.split(" ")
+            value = int(value)
+
+            graph.append(strength)
+            screen += check_pixel(strength, pixel)
+            cycle += 1
+
+            graph.append(strength)
+            screen += check_pixel(strength, pixel)
+            cycle += 1
+
+            strength += value
+
+        pixel = cycle % 40
+        if pixel == 0:
+            screen += '\n'
+
+    print(screen)
+    # for r in range(20, cycle, 40):
+    #     peak = r * graph[r]
+    #     print(f"C:{r}\tS:{graph[r]}\tPeak:{peak}")
+    #     final += peak
+
+    return screen
 
 
 INPUT_S = '''\
