@@ -45,43 +45,39 @@ def computeP1(s: str) -> int:
 
 
 def check_pixel(s: int, c: int) -> str:
+    nl = '\n' if (c == 39) else ""
     if in_sprite(s, c):
-        return "#"
+        return "#"+nl
     else:
-        return "."
+        return "."+nl
 
 
 def compute(s: str) -> str:
     commands = s.splitlines()
 
-    cycle = 1
+    cycle = 0
     strength = 1
     graph = [0]
     screen = ""
-    pixel = cycle % 40
 
     for c in commands:
         if c.startswith('noop'):
             graph.append(strength)
-            screen += check_pixel(strength, pixel)
-            cycle += 1
+            screen += check_pixel(strength, cycle)
+            cycle = (cycle + 1) % 40
         elif c.startswith('addx'):
             _, value = c.split(" ")
             value = int(value)
 
             graph.append(strength)
-            screen += check_pixel(strength, pixel)
-            cycle += 1
+            screen += check_pixel(strength, cycle)
+            cycle = (cycle + 1) % 40
 
             graph.append(strength)
-            screen += check_pixel(strength, pixel)
-            cycle += 1
+            screen += check_pixel(strength, cycle)
+            cycle = (cycle + 1) % 40
 
             strength += value
-
-        pixel = cycle % 40
-        if pixel == 0:
-            screen += '\n'
 
     print(screen)
     # for r in range(20, cycle, 40):
@@ -247,7 +243,8 @@ EXPECTED_S = """##..##..##..##..##..##..##..##..##..##..
 ####....####....####....####....####....
 #####.....#####.....#####.....#####.....
 ######......######......######......####
-#######.......#######.......#######....."""
+#######.......#######.......#######.....
+"""
 
 
 @pytest.mark.parametrize(
